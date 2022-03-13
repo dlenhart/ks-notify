@@ -164,24 +164,24 @@ def main() -> None:
 
     previous_count = int(previous_count)
     current_count = data['project']['backers_count'] or 0
+    pledge = data['project']['pledged'] or 0
+
+    payload = {'current_count': current_count,
+                'previous_count': previous_count,
+                'pledge': pledge
+                }
 
     print("Current Count: " + str(current_count))
 
     if current_count > previous_count:
         File.Write(current_count, File.File())
-        pledge = data['project']['pledged'] or 0
+        
 
         if os.getenv('SEND_EMAIL') == 'true':
-            Notify.Email({'current_count': current_count,
-                          'previous_count': previous_count,
-                          'pledge': pledge
-                          })
+            Notify.Email(payload)
 
         if os.getenv('SEND_SMS') == 'true':
-            Notify.Twilio({'current_count': current_count,
-                           'previous_count': previous_count,
-                           'pledge': pledge
-                           })
+            Notify.Twilio(payload)
 
         print('New backer! New pledge amount: $' + str(pledge))
     else:
