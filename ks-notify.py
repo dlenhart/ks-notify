@@ -67,7 +67,7 @@ class File():
     @staticmethod
     def Read() -> int:
         '''Return the last backer count'''
-        file = Path(os.getenv('DATA_FILE'))
+        file = File.File()
 
         if not os.path.exists(file):
             File.Write(0, file)
@@ -77,6 +77,15 @@ class File():
             count = f.readline().rstrip()
 
         return count
+
+    @staticmethod
+    def File() -> string:
+        '''Return the data file name'''
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file = dir_path + '/' + os.getenv('DATA_FILE')
+        file = Path(file).resolve()
+
+        return file
 
 
 class Notify():
@@ -158,7 +167,7 @@ def main() -> None:
     print("Current Count: " + str(current_count))
 
     if current_count > previous_count:
-        File.Write(current_count, os.getenv('DATA_FILE'))
+        File.Write(current_count, File.File())
         pledge = data['project']['pledged'] or 0
 
         if os.getenv('SEND_EMAIL') == 'true':
