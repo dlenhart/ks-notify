@@ -166,16 +166,16 @@ def main() -> None:
     current_count = data['project']['backers_count'] or 0
     pledge = data['project']['pledged'] or 0
 
-    payload = {'current_count': current_count,
-                'previous_count': previous_count,
-                'pledge': pledge
-                }
+    payload = {
+        'current_count': current_count,
+        'previous_count': previous_count,
+        'pledge': pledge
+    }
 
     print("Current Count: " + str(current_count))
 
     if current_count > previous_count:
         File.Write(current_count, File.File())
-        
 
         if os.getenv('SEND_EMAIL') == 'true':
             Notify.Email(payload)
