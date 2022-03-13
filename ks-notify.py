@@ -31,6 +31,7 @@ class KS():
         self.project = os.getenv('PROJECT')
         self.user = os.getenv('USER')
         self.url = os.getenv('URL')
+        self.timeout = os.getenv('TIMEOUT_RETRIES')
 
     def ks_url(self) -> string:
         '''Return the Kickstarter url'''
@@ -42,7 +43,7 @@ class KS():
         try:
             r = requests.get(
                 self.ks_url() + '/stats.json?v=1',
-                timeout=int(os.getenv('TIMEOUT_RETRIES'))
+                timeout=int(self.timeout)
             )
             r.raise_for_status()
         except requests.exceptions.HTTPError as errh:
